@@ -15,7 +15,6 @@ namespace Form_TARpv21
     {
         TreeView puu;
         Button nupp;
-        Button choosefile;
         Label silt;
         CheckBox mruut1, mruut2;
         RadioButton rnupp1, rnupp2, rnupp3, rnupp4;

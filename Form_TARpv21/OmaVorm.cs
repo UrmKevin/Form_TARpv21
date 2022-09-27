@@ -11,46 +11,58 @@ namespace Form_TARpv21
 {
     public class OmaVorm: Form
     {
+        private string filename;
+        TreeView mpuu;
         public OmaVorm() { }
-        public OmaVorm(string Pealkiri, string Fail)
+        public OmaVorm(string Pealkiri, string valigeFail)
         {
             this.ClientSize = new System.Drawing.Size(300, 300);
             this.Text = Pealkiri;
             Button choosefile = new Button
             {
-                Text = Fail,
-                Location = new System.Drawing.Point(150, 10),
-                Size = new System.Drawing.Size(100, 50),
+                Text = valigeFail,
+                Location = new System.Drawing.Point(125, 5),
+                Size = new System.Drawing.Size(190, 40),
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = System.Drawing.Color.Orange,
             };
             choosefile.Click += Choosefile_Click;
+            Label mPilt = new Label
+            {
+                Text = filename,
+                Location = new System.Drawing.Point(320, 5),
+                Size = new System.Drawing.Size(350, 350),
+                BackColor = System.Drawing.Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
             //Button nupp = new Button
             //{
-            //    Text = Nupp,
+            //    Text = "ASD",
             //    Location = new System.Drawing.Point(50, 50),
             //    Size = new System.Drawing.Size(100, 50),
             //    BackColor = System.Drawing.Color.Orange,
             //};
             //nupp.Click += Nupp_Click;
-            Label failnimi = new Label
-            {
-                Text = Fail,
-                Location = new System.Drawing.Point(50, 10),
-                Size = new System.Drawing.Size(100, 50),
-                BackColor = System.Drawing.Color.White,
-            };
+
             //this.Controls.Add(nupp);
             this.Controls.Add(choosefile);
-            this.Controls.Add(failnimi);
+            this.Controls.Add(mPilt);
+            Height = 400;
+            Width = 695;
+            Text = "Muusika";
+            mpuu = new TreeView();
+            mpuu.Dock = DockStyle.Left;
+            TreeNode mOksad = new TreeNode("Muusika");
+            mpuu.Nodes.Add(mOksad);
+            this.Controls.Add(mpuu);
         }
 
         private void Choosefile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            DialogResult result = openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            DialogResult tulemus = openFileDialog1.ShowDialog();
+            if (tulemus == DialogResult.OK)
             {
                 var vastus = MessageBox.Show("Kas tahad muusikat kuulata?", "Küsims", MessageBoxButtons.YesNo);
                 if (vastus == DialogResult.Yes)
@@ -58,7 +70,18 @@ namespace Form_TARpv21
                     string file = openFileDialog1.FileName;
                     try
                     {
-                        MessageBox.Show(file);
+                        string filename = Path.GetFileName(file);
+                        //MessageBox.Show("Filename: " + filename);
+                        Label failnimi = new Label
+                        {
+                            Text = filename,
+                            Location = new System.Drawing.Point(125, 55),
+                            Size = new System.Drawing.Size(190, 20),
+                            BackColor = System.Drawing.Color.White,
+                            Padding = new Padding(6),
+                            AutoSize = true,
+                            BorderStyle = BorderStyle.FixedSingle
+                        };this.Controls.Add(failnimi);
                         string text = File.ReadAllText(file);
                         using (var muusika = new SoundPlayer(file))
                         {
@@ -76,13 +99,12 @@ namespace Form_TARpv21
         }
         //private void Nupp_Click(object sender, EventArgs e)
         //{
-        //    Button nupp_sender = (Button)sender;
-        //    var vastus = MessageBox.Show("Kas tahad muusikat kuulata?","Küsims",MessageBoxButtons.YesNo);
+        //    var vastus = MessageBox.Show("Kas tahad muusikat kuulata?", "Küsims", MessageBoxButtons.YesNo);
         //    if (vastus == DialogResult.Yes)
         //    {
         //        using (var muusika = new SoundPlayer(@"..\..\Yoaimo.wav"))
         //        {
-        //            MessageBox.Show("SUIIIIII");
+        //            MessageBox.Show("playing...");
         //            muusika.Play();
         //        }
         //    }
